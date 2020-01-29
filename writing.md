@@ -31,7 +31,7 @@ $$\frac{\partial{J}}{u_o} = -(1 - \sigma(u_o^Tv_c))v_c$$
 
 $$\frac{\partial{J}}{u_k} = (1 - \sigma(-u_k^Tv_c))v_c $$
 
-不用对所有的词都计算 $exp(u_w^Tv_c) $，计算量变小。
+不用对所有的词都计算 $exp(u_w^Tv_c)$，计算量变小。
 
 ## Q.f
 
