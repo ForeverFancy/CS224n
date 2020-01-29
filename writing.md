@@ -17,7 +17,7 @@ $$ \frac{\partial{J}}{\partial{w}} = P(O=w|C=c)v_c $$
 $$ \frac{\partial{J}}{\partial{w_o}} = (P(O=o|C=c) - 1) v_c $$
 
 综上:
-$$\frac{\partial{J}}{\partial{\mathbf{U}}} = (\hat{y} - y)^T v_c $$
+$$\frac{\partial{J}}{\partial{\mathbf{U}}} = (\hat{y} - y) v_c^T $$
 
 ## Q.d
 
