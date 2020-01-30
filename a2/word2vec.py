@@ -127,8 +127,10 @@ def negSamplingLossAndGradient(
     # gradOutsideVecs[negSampleWordIndices] += np.outer((1 - sigmoid_minus_uk_vc), centerWordVec)
     # only add one time(the last one)
     ################################################################
-    for i, negSampleWordInd in enumerate(negSampleWordIndices):
-        gradOutsideVecs[negSampleWordInd] += (1 - sigmoid_minus_uk_vc[i]) * centerWordVec
+    unique, indices, counts = np.unique(negSampleWordIndices, return_index=True, return_counts=True)
+    # for i, negSampleWordInd in enumerate(negSampleWordIndices):
+    #     gradOutsideVecs[negSampleWordInd] += (1 - sigmoid_minus_uk_vc[i]) * centerWordVec
+    gradOutsideVecs[unique, :] = ((1 - sigmoid_minus_uk_vc[indices]) * counts)[:, None] * centerWordVec[None, :]
     gradOutsideVecs[outsideWordIdx] += - (1 - sigmoid_uo_vc) * centerWordVec
 
     ### END YOUR CODE
