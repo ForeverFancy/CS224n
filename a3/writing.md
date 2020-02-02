@@ -36,3 +36,9 @@ $$\gamma = \frac{1}{1-p_{drop}}$$
 ### b
 
 如果计算初始化则共需要 1 + n + n = 2n + 1 步，不计算初始化则需要 2n 步。
+
+## Note
+
+A shallow copy constructs a new compound object and then (to the extent possible) inserts references into it to the objects found in the original.
+
+A deep copy constructs a new compound object and then, recursively, inserts copies into it of the objects found in the original.
