@@ -17,3 +17,22 @@ $$\gamma = \frac{1}{1-p_{drop}}$$
 ### b.ii
 
 这是正则化防止过拟合的一种方式，在训练阶段使用，而如果在预测阶段使用可能会丢弃掉重要的节点因而实际预测产生误差。
+
+## 2
+
+### a
+
+| Stack                          | Buffer                      | New dependency      | Transition |
+| ------------------------------ | --------------------------- | ------------------- | ---------- |
+| [ROOT, parsed]                 | [this, sentence, correctly] | parsed -> I         | LEFT-ARC   |
+| [ROOT, parsed, this]           | [sentence, correctly]       |                     | SHIFT      |
+| [ROOT, parsed, this, sentence] | [correctly]                 |                     | SHIFT      |
+| [ROOT, parsed, sentence]       | [correctly]                 | this -> sentence    | LEFT-ARC   |
+| [ROOT, parsed]                 | [correctly]                 | sentence -> parsed  | RIGHT-ARC  |
+| [ROOT, parsed, correctly]      | []                          |                     | SHIFT      |
+| [ROOT, parsed]                 | []                          | correctly -> parsed | RIGHT-ARC  |
+| [ROOT]                         | []                          | ROOT -> parsed      | RIGHT-ARC  |
+
+### b
+
+如果计算初始化则共需要 1 + n + n = 2n + 1 步，不计算初始化则需要 2n 步。
