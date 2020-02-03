@@ -53,14 +53,15 @@ class PartialParse(object):
         ###         1. Shift
         ###         2. Left Arc
         ###         3. Right Arc
-        if transition == "S":
-            self.stack.append(self.buffer.pop(0))
-        elif transition == "LA":
-            self.dependencies.append(tuple([self.stack[-1], self.stack.pop(-2)]))
-        elif transition == "RA":
-            self.dependencies.append(tuple([self.stack[-2], self.stack.pop(-1)]))
-        else:
-            raise Exception("Transition must be 'S' or 'LA' or 'RA'.")
+        if not(len(self.stack) == 1 and len(self.buffer) == 0):
+            if transition == "S":
+                self.stack.append(self.buffer.pop(0))
+            elif transition == "LA":
+                self.dependencies.append(tuple([self.stack[-1], self.stack.pop(-2)]))
+            elif transition == "RA":
+                self.dependencies.append(tuple([self.stack[-2], self.stack.pop(-1)]))
+            else:
+                raise Exception("Transition must be 'S' or 'LA' or 'RA'.")
 
         ### END YOUR CODE
 
@@ -117,10 +118,10 @@ def minibatch_parse(sentences, model, batch_size):
     while len(unfinished_parses) != 0:
         minibatch = unfinished_parses[:batch_size]
         transitions = model.predict(minibatch)
-        for index,parser in enumerate(minibatch):
+        for index, parser in enumerate(minibatch):
             parser.parse_step(transitions[index])
-            if len(parser.stack) == 1 and len(parser.buffer) == 0:
-                unfinished_parses.pop(index)
+
+        unfinished_parses = [parser for parser in unfinished_parses if not (len(parser.stack) == 1 and len(parser.buffer) == 0)]
     
     dependencies = [partial_parse.dependencies for partial_parse in partial_parses]
 
