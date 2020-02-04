@@ -18,3 +18,10 @@ a2/utils/__pycache__/utils.cpython-37.pyc
 a2/a2.pdf
 PPT/
 a3/utils
+a4/en_es_data/dev.en
+a4/en_es_data/dev.es
+a4/en_es_data/test.en
+a4/en_es_data/test.es
+a4/en_es_data/train.en
+a4/en_es_data/train.es
+a4/sanity_check_en_es_data
