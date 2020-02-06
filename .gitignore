@@ -25,3 +25,8 @@ a4/en_es_data/test.es
 a4/en_es_data/train.en
 a4/en_es_data/train.es
 a4/sanity_check_en_es_data
+a4/__pycache__/model_embeddings.cpython-35.pyc
+a4/__pycache__/nmt_model.cpython-35.pyc
+a4/__pycache__/utils.cpython-35.pyc
+a4/__pycache__/vocab.cpython-35.pyc
+a4/.vscode/settings.json

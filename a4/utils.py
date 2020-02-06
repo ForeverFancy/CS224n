@@ -33,7 +33,9 @@ def pad_sents(sents, pad_token):
     sents_padded = []
 
     ### YOUR CODE HERE (~6 Lines)
-
+    length = [len(sentence) for sentence in sents]
+    max_length = max(length)
+    sents_padded = [sentence + [pad_token] * (max_length - length[i]) for i, sentence in enumerate(sents)]
 
 
     ### END YOUR CODE
