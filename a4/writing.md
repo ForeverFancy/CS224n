@@ -102,3 +102,16 @@ $c_1$ 的 BLEU 得分较高，但其翻译质量不如 $c_2$.
 缺点：
 - 可能无法找出真正高质量的译文；
 - 人工评价能够反映人对翻译质量的真实感受，所以人工评价还是评价过程中的重要部分，是不可替代的。
+
+## 测试结果
+
+```
+bw@assignment4:~/a4$ sh ./run.sh test
+[nltk_data] Downloading package punkt to /home/bw/nltk_data...
+[nltk_data]   Package punkt is already up-to-date!
+load test source sentences from [./en_es_data/test.es]
+load test target sentences from [./en_es_data/test.en]
+load model from model.bin
+Decoding: 100%|███████████████████████████████████████████████████████████████████████████████████████| 8064/8064 [05:48<00:00, 23.12it/s]
+Corpus BLEU: 35.79638827279159
+```
