@@ -31,3 +31,17 @@ a4/__pycache__/utils.cpython-35.pyc
 a4/__pycache__/vocab.cpython-35.pyc
 a4/.vscode/settings.json
 a4/vocab.json
+a5/__pycache__/utils.cpython-35.pyc
+a5/.vscode/settings.json
+a5/en_es_data/dev_tiny.en
+a5/en_es_data/dev_tiny.es
+a5/en_es_data/dev.en
+a5/en_es_data/dev.es
+a5/en_es_data/test_tiny.en
+a5/en_es_data/test_tiny.es
+a5/en_es_data/test.en
+a5/en_es_data/test.es
+a5/en_es_data/train_tiny.en
+a5/en_es_data/train_tiny.es
+a5/en_es_data/train.en
+a5/en_es_data/train.es
