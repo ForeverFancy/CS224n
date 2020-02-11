@@ -17,8 +17,8 @@ import torch.nn as nn
 #   `Highway` in the file `highway.py`
 # Uncomment the following two imports once you're ready to run part 1(j)
 
-# from cnn import CNN
-# from highway import Highway
+from cnn import CNN
+from highway import Highway
 
 # End "do not change" 
 
@@ -26,7 +26,7 @@ class ModelEmbeddings(nn.Module):
     """
     Class that converts input words to their CNN-based embeddings.
     """
-    def __init__(self, embed_size, vocab):
+    def __init__(self, embed_size, vocab, dropout_rate=0.3):
         """
         Init the Embedding layer for one language
         @param embed_size (int): Embedding size (dimensionality) for the output 
@@ -40,8 +40,13 @@ class ModelEmbeddings(nn.Module):
         ## End A4 code
 
         ### YOUR CODE HERE for part 1j
-
-
+        self.embed_size = embed_size
+        self.e_char = 50
+        pad_token_idx = vocab.char2id['<pad>']
+        self.embeddings = nn.Embedding(len(vocab.char2id), self.e_char, padding_idx=pad_token_idx)
+        self.cnn = CNN(e_char=self.e_char, e_word=self.embed_size)
+        self.highway = Highway(e_word=self.embed_size)
+        self.dropout = nn.Dropout(p=dropout_rate)
         ### END YOUR CODE
 
     def forward(self, input):
@@ -59,7 +64,13 @@ class ModelEmbeddings(nn.Module):
         ## End A4 code
 
         ### YOUR CODE HERE for part 1j
-
+        sentence_length, batch_size, max_word_length = input.shape
+        x_emb = self.embeddings(input)
+        x_reshape = x_emb.view(x_emb.shape[0] * x_emb.shape[1], x_emb.shape[2], x_emb.shape[3]).transpose(1, 2)
+        x_conv_out = self.cnn.forward(x_reshape)
+        x_highway = self.highway.forword(x_conv_out)
+        x_word_emb = self.dropout(x_highway).view(sentence_length, batch_size, self.embed_size)
+        return x_word_emb
 
         ### END YOUR CODE
 
