@@ -27,7 +27,23 @@ class CharDecoder(nn.Module):
         ### Hint: - Use target_vocab.char2id to access the character vocabulary for the target language.
         ###       - Set the padding_idx argument of the embedding matrix.
         ###       - Create a new Embedding layer. Do not reuse embeddings created in Part 1 of this assignment.
-        
+        super(CharDecoder, self).__init__()
+        self.target_vocab = target_vocab
+        self.charDecoder = nn.LSTM(
+            input_size=char_embedding_size,
+            hidden_size=hidden_size,
+            bias=True,
+            bidirectional=False
+        )
+        self.char_output_projection = nn.Linear(
+            in_features=hidden_size,
+            out_features=len(self.target_vocab.char2id)
+        )
+        self.decoderCharEmb = nn.Embedding(
+            num_embeddings=len(self.target_vocab.char2id),
+            embedding_dim=char_embedding_size,
+            padding_idx=self.target_vocab.char2id['<pad>']
+        )
 
         ### END YOUR CODE
 
@@ -44,7 +60,10 @@ class CharDecoder(nn.Module):
         """
         ### YOUR CODE HERE for part 2b
         ### TODO - Implement the forward pass of the character decoder.
-        
+        x = self.decoderCharEmb(input)
+        dec_hidden, (last_hidden, last_cell) = self.charDecoder(x, dec_hidden)
+        scores = self.char_output_projection(dec_hidden)
+        return scores, (last_hidden, last_cell)
         
         ### END YOUR CODE 
 
@@ -62,6 +81,12 @@ class CharDecoder(nn.Module):
         ###
         ### Hint: - Make sure padding characters do not contribute to the cross-entropy loss.
         ###       - char_sequence corresponds to the sequence x_1 ... x_{n+1} from the handout (e.g., <START>,m,u,s,i,c,<END>).
+        # print(char_sequence.shape)
+        scores, dec_hidden =  self.forward(char_sequence[:-1])
+        scores = scores.view(-1, scores.shape[-1])
+        target = torch.flatten(char_sequence[1:])
+        loss_char_dec = nn.CrossEntropyLoss(reduction='sum', ignore_index=self.target_vocab.char2id['<pad>'])
+        return loss_char_dec(scores, target)
 
 
         ### END YOUR CODE
@@ -83,7 +108,24 @@ class CharDecoder(nn.Module):
         ###      - Use torch.tensor(..., device=device) to turn a list of character indices into a tensor.
         ###      - We use curly brackets as start-of-word and end-of-word characters. That is, use the character '{' for <START> and '}' for <END>.
         ###        Their indices are self.target_vocab.start_of_word and self.target_vocab.end_of_word, respectively.
+        batch_size = initialStates[0].shape[1]
+        outputword = [[] for i in range(batch_size)]
+        current_char = torch.tensor(
+            [[self.target_vocab.start_of_word] for i in range(batch_size)], device=device).transpose(0, 1)
         
+        h_t = initialStates
+        for t in range(max_length):
+            s_t, h_t = self.forward(current_char, h_t)
+            p_t = torch.softmax(s_t, dim=2)
+            current_char = torch.argmax(p_t, dim=2)
+            # print(current_char.squeeze(0))
+            for j in range(batch_size):
+                outputword[j].append(self.target_vocab.id2char[int(current_char.squeeze(0)[j])])
+        outputword = [s[:s.index(self.target_vocab.end_of_word)] if self.target_vocab.end_of_word in s else s for s in outputword]
+        # print(len(outputword[0]))
+        return outputword
+        
+
         
         ### END YOUR CODE
 

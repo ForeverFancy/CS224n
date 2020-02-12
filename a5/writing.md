@@ -60,3 +60,7 @@ traduzco, traduces, traduzca, traduzcas 没有出现在词典中。
 Word2Vec 主要是从词语的含义方面建模相似性，而 CharCNN 主要是根据构成单词的字母序列的相似程度建模相似性。
 
 Word2Vec 主要用在语言模型等需要词语含义的情景下，例如 Skip-Gram 等预测可能出现的单词，而 CharCNN 是要在不知道任何上下文信息的情况下进行词嵌入，它不需要知道单词的含义，只捕捉字母层面的信息。 
+
+## Note
+
+CrossEntropyLoss 的使用，input = size(N, C), 最后一维是类别数，之后会计算出属于各个类别的概率，target = size(N)，只需要给出每个样本对应的正确的类别。 
